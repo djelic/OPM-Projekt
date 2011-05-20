@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#       zadatak9.py
+#       zadatak8.py
 #       
 #       Copyright 2011 David Jelic <djelic@buksna.net>
 #       
@@ -23,44 +23,43 @@
 from __future__ import division
 from math import sqrt, pow
 from numpy import *
-from zadatak7 import zadatak7
-from zadatak8 import zadatak8
 
-def zadatak9(p, u, v0, v1, v2):
-	e1 = v1 - v0
-	e2 = v2 - v0
+def zadatak8(x, y, z, q):
+	e1 = y - x
+	e2 = z - x
 	n = cross(e1, e2)
-	d = dot(n, v0)
+	d = dot(n, x)
+	a = dot(e1, e1)
+	b = dot(e1, e2)
+	c = dot(e2, e2)
+	D = a * c - pow(b, 2)
+	A = a / D
+	B = b / D
+	C = c / D
+	ubeta = C*e1 - B*e2
+	ugama = A*e2 - B*e1
 	
-	q = zadatak7(p, u, n, d)
-	if q is None:
-		return
-	else:
-		alpha, beta, gama = zadatak8(v0, v1, v2, q)
-		
-		if (beta < 0) or (gama < 0) or (alpha < 0):
-			return
-		return q
+	r = q - x
+	beta = dot(ubeta, r)
+	gama = dot(ugama, r)
+	alpha = 1 - beta - gama
+	return (alpha, beta, gama)
 
 def main():
-	#p = array(input("Unesi početnu točku p: "))
-	#u = array(input("Unesi vektor smjera u: "))
-	#v0 = array(input("Unesi točku v0: "))
-	#v1 = array(input("Unesi točku v1: "))
-	#v2 = array(input("Unesi točku v2: "))
-	p = array([1,0,2])
-	u = array([2,-1,1])
-	v0 = array([2,-1,3])
-	v1 = array([3,2,1])
-	v2 = array([0,3,-2])
+	#x = array(input("Unesi točku x: "))
+	#y = array(input("Unesi točku y: "))
+	#z = array(input("Unesi točku z: "))
+	#q = array(input("Unesi točku q: "))
+	x = array([2,-1,3])
+	y = array([3,2,1])
+	z = array([0,3,-2])
+	q = array([1.92307692,-0.46153846,2.46153846])
 	
-	rez = zadatak9(p, u, v0, v1, v2)
+	rez = zadatak8(x, y, z, q)
 	if rez is not None:
-		print "Zraka siječe trokut u točki q=", rez
-	else:
-		print "Zraka ne siječe trokut!"
-	
-	return
+		print "Baricentrične koordinate su: ", rez[0], ",", rez[1], ",", rez[2]
+	return 0
 
 if __name__ == '__main__':
 	main()
+
